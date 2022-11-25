@@ -19,6 +19,12 @@ const addPost = (req, res) => {
     })
 }
 
+// const editPost = (req, res) => {
+//     const userId = 1;
+//     const id = req.body.id;
+//     // const 
+// }
+
 const allPost = (req, res) => {
     const userId = 1;
     Blog.findAll({ where: { userId } }).then((data) => {

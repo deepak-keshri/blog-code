@@ -68,7 +68,15 @@ const AllPost = () => {
         }
     }
     const editPost = async (id) => {
-        const response = await fetch("http://localhost:8000/api/")
+        const response = await fetch("http://localhost:8000/api/addpost", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id: id })
+        });
+        const res = await response.json();
+        console.log(res);
     }
     return (
         <div className='container mt-5'>
