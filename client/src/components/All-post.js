@@ -67,17 +67,17 @@ const AllPost = () => {
             })
         }
     }
-    const editPost = async (id) => {
-        const response = await fetch("http://localhost:8000/api/addpost", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ id: id })
-        });
-        const res = await response.json();
-        console.log(res);
-    }
+    // const editPost = async (id) => {
+    //     const response = await fetch("http://localhost:8000/api/addpost", {
+    //         method: "GET",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify({ id: id })
+    //     });
+    //     const res = await response.json();
+    //     console.log(res);
+    // }
     return (
         <div className='container mt-5'>
             <ToastContainer />
@@ -99,8 +99,10 @@ const AllPost = () => {
                             <td>{item.title.charAt(0).toUpperCase() + item.title.slice(1)}</td>
                             <td>{item.createdAt}</td>
                             <td>
-                                <button className='btn btn-info'>View</button>
-                                <button className='btn btn-primary me-2 ms-2' onClick={() => editPost(item.id)}>Edit</button>
+                                {/* <button className='btn btn-info'>View</button> */}
+                                <NavLink to={`/view/${item.id}`} className="btn btn-info">View</NavLink>
+                                {/* <button className='btn btn-primary me-2 ms-2' onClick={() => editPost(item.id)}>Edit</button> */}
+                                <NavLink to={`/edit/${item.id}`} className="btn btn-primary me-2 ms-2">Edit</NavLink>
                                 <button className='btn btn-danger' onClick={() => isDelete(item.id)}>Delete</button>
                             </td>
                         </tr>

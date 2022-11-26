@@ -12,6 +12,8 @@ import Signin from './components/auth/signin';
 import AllPost from './components/All-post';
 import AddPost from './components/Add-post';
 import ShowAllPost from './components/ShowAllPost';
+import Edit from './components/Edit';
+import View from './components/ViewPost';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -24,6 +26,8 @@ root.render(
           <Route path="/signin" element={<Signin />} />
           <Route path='/all-post' element={<AllPost />} />
           <Route path='/add-post' element={<AddPost />} />
+          <Route path='/edit/:id' element={<Edit />} />
+          <Route path='/view/:id' element={<View />} />
           <Route path='/' element={<ShowAllPost />} />
         </Route>
       </Routes>

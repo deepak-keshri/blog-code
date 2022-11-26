@@ -8,9 +8,6 @@ const ShowAllPost = () => {
     useEffect(() => {
         getAllPost();
     })
-    // useEffect(() => {
-    //     console.log(data);
-    // },[data])
 
     const getAllPost = async () => {
         const response = await fetch("http://localhost:8000/api/getAllPost", {
@@ -29,8 +26,8 @@ const ShowAllPost = () => {
     return (
         <div className="container mt-5">
             {data && data.map((item, index) => (
-                <NavLink to="/ShowPost" className="nav-link">
-                    <div className="card mb-3 overflow-hidden" key={item.id} style={{maxHeight: "300px"}}>
+                <NavLink to={`/view/${item.id}`} className="nav-link">
+                    <div className="card mb-3 overflow-hidden" key={item.id} style={{ maxHeight: "300px" }}>
                         <div className="card-body">
                             <h5 className="card-title">{item.title}</h5>
                             <hr />
