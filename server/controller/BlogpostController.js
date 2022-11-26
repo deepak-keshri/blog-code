@@ -60,7 +60,7 @@ const deletePost = (req, res) => {
 const showAllPost = (req, res) => {
     const userId = 1;
 
-    Blog.findAll({where : {userId}}).then((data) => {
+    Blog.findAll({ where: { userId } }).then((data) => {
         if (data) {
             return res.status(200).json({
                 msg: "Data Found",
@@ -72,5 +72,37 @@ const showAllPost = (req, res) => {
         res.status(403).json({ err });
     })
 }
+const getPost = (req, res) => {
+    const userId = 1;
+    const id = req.body.id;
 
-module.exports = { addPost, allPost, deletePost, showAllPost }
+    Blog.findOne({ where: { id: id } }).then((data) => {
+        if (data) {
+            return res.status(200).json({
+                msg: "Data Found",
+                data: data,
+                success: true
+            })
+        }
+    }).catch((err) => {
+        res.status(403).json({ err })
+    })
+}
+
+const updatePost = (req, res) => {
+    const id = req.body.id;
+    console.log(id);
+
+    Blog.update({ where: { id } }).then((data) => {
+        if (data) {
+            return res.status(200).json({
+                msg: "Data Updated",
+                data: data,
+                success: true
+            })
+        }
+    }).catch((err) => {
+        res.status(403).json({ err });//console.log(err);
+    })
+}
+module.exports = { addPost, allPost, deletePost, showAllPost, getPost, updatePost }
