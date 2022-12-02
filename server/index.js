@@ -6,6 +6,7 @@ const modules = require("./modules/");
 const bodyparser = require("body-parser");
 const authRoute = require("./routes/authRoute.js");
 const blogRoute = require("./routes/route");
+const port = process.env.PORT || 8000;
 
 app.use(cors());
 
@@ -17,7 +18,7 @@ modules.sequelize.sync().then(async () => {
     console.log("DB connected");
 })
 
-app.listen(8000, () => {
+app.listen(port, () => {
     console.log();
     console.log("******** Server is running on port number 8000 *******");
     console.log();

@@ -2,6 +2,7 @@ import { ToastContainer } from "react-toastify";
 import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
 
 const Edit = () => {
@@ -22,10 +23,12 @@ const Edit = () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ id: id })
+                body: JSON.stringify({ id: id, content: content, title: title })
             });
             const res = await response.json();
-            console.log(res);
+            if (res.success) {
+                navigate("/all-post")
+            }
         } catch (err) {
             console.log(err);
 
@@ -47,6 +50,7 @@ const Edit = () => {
     }
     return (
         <div className='container mt-5'>
+            {/* <NavLink to="/show-post" className="btn btn-info d-infile-block">Back</NavLink> */}
             <ToastContainer />
             <h3>Add Post</h3>
             <div className='row'>
@@ -59,7 +63,11 @@ const Edit = () => {
                         <Form.Control as="textarea" id="content" rows={15} placeholder='Enter Content' value={content} onChange={(e) => setContent(e.target.value)} />
                     </Form.Group>
 
+                    {/* <Form.Group className="mb-3"> */}
                     <Button variant='success' type='submit'>Update</Button>
+                    <NavLink to={`/all-post`} className="btn btn-info ms-2">Back</NavLink>
+
+                    {/* </Form.Group> */}
                 </Form>
             </div>
         </div>

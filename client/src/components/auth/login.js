@@ -4,8 +4,8 @@ import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("deepak11@nirvaat.in");
-  const [password, setPassword] = useState("dk123");
+  const [email, setEmail] = useState("deepak@nirvaat.in");
+  const [password, setPassword] = useState("a");
 
   const checkAuth = async (e) => {
     e.preventDefault();
@@ -23,6 +23,7 @@ const Login = () => {
 
       if (res.success) {
         localStorage.setItem("token", res.token);
+        localStorage.setItem("userId",res.userId);
         toast.success(res.msg, {
           "position": "top-center",
           "closeOnClick": true,

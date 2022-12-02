@@ -1,25 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { json, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert'
+import moment from 'moment';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-// import addPost from './Add-post';
+import Fab from '@mui/material/Fab';
+import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityButton from '@mui/icons-material/Visibility'
+import EditIcon from '@mui/icons-material/Edit';
 
 const AllPost = () => {
     const [allData, setData] = useState(null);
+    const [auth, setAuth] = useState(localStorage.getItem("token"));
 
     useEffect(function () {
+        // setAuth(()=>localStorage.getItem("token")); 
         getAllPost();
     }, [])
 
     const getAllPost = async () => {
         try {
+            // console.log(localStorage.getItem("token"));
+            const userId = localStorage.getItem("userId");
             const response = await fetch("http://localhost:8000/api/allpost", {
-                method: "GET",
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(),
+                body: JSON.stringify({ userId: userId, Auth: auth }),
             })
             const res = await response.json();
             if (res.success) {
@@ -67,17 +75,7 @@ const AllPost = () => {
             })
         }
     }
-    // const editPost = async (id) => {
-    //     const response = await fetch("http://localhost:8000/api/addpost", {
-    //         method: "GET",
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify({ id: id })
-    //     });
-    //     const res = await response.json();
-    //     console.log(res);
-    // }
+
     return (
         <div className='container mt-5'>
             <ToastContainer />
@@ -97,13 +95,23 @@ const AllPost = () => {
                         <tr key={item.id}>
                             <td>{index + 1}</td>
                             <td>{item.title.charAt(0).toUpperCase() + item.title.slice(1)}</td>
-                            <td>{item.createdAt}</td>
+                            <td>{moment(item.createdAt).format('DD-MMM-YYYY hh:mm A')}</td>
                             <td>
-                                {/* <button className='btn btn-info'>View</button> */}
-                                <NavLink to={`/view/${item.id}`} className="btn btn-info">View</NavLink>
-                                {/* <button className='btn btn-primary me-2 ms-2' onClick={() => editPost(item.id)}>Edit</button> */}
-                                <NavLink to={`/edit/${item.id}`} className="btn btn-primary me-2 ms-2">Edit</NavLink>
-                                <button className='btn btn-danger' onClick={() => isDelete(item.id)}>Delete</button>
+                                <NavLink to={`/view/${item.id}`}>
+                                    <Fab aria-label='view' color='success' size='small'>
+                                        <VisibilityButton color='' sx={{ mr: 0.2 }} />
+                                    </Fab>
+                                </NavLink>
+
+                                <NavLink to={`/edit/${item.id}`}>
+                                    <Fab area-label='edit' sx={{ mr: 0.6, ml: 0.6 }} color='secondary' size='small'>
+                                        <EditIcon />
+                                    </Fab>
+                                </NavLink>
+
+                                <Fab aria-label='delete' color='' size='small' onClick={() => isDelete(item.id)}>
+                                    <DeleteIcon color='error' />
+                                </Fab>
                             </td>
                         </tr>
                     ))}

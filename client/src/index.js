@@ -9,11 +9,12 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { Routes, Route } from "react-router-dom";
 import Login from './components/auth/login';
 import Signin from './components/auth/signin';
-import AllPost from './components/All-post';
+import AllPost from './components/User-All-Post.js';
 import AddPost from './components/Add-post';
 import ShowAllPost from './components/ShowAllPost';
 import Edit from './components/Edit';
 import View from './components/ViewPost';
+// import Moment from 'react-moment';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

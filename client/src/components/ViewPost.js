@@ -26,7 +26,7 @@ const View = () => {
             <NavLink to={`/all-post`} className="btn btn-success">Back</NavLink>
             <h2 className="mt-5">{title}</h2>
             <hr />
-            <div>{content}</div>
+            <div>{content.replace(/["']/g, "")}</div>
         </div>
     );
 }

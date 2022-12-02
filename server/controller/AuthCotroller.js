@@ -4,91 +4,76 @@ const bcrypt = require("bcryptjs");
 const db = require("./../modules/index");
 
 const User = db.User;
+const saltRounds = 10;
 
-const signin = (req, res) => {
+const signin = async (req, res) => {
     try {
         let { name, email, phone, password } = req.body;
         const userId = v4();
 
-        User.findOne({ where: { email } }).then((user) => {
-            if (user) {
-                return res.status(403).json({
-                    msg: "You are already register.",
-                });
-            } else {
-                bcrypt.genSalt(10, (err, salt) => {
-                    bcrypt.hash(password, salt, (err, hash) => {
-                        if (err) throw err;
-                        password = hash;
-                        User.create({
-                            name,
-                            phone,
-                            email,
-                            password,
-                            id: userId
-                        }).then(() => {
-                            res.status(200).json({
-                                msg: "Registration Successful",
-                                success: true,
-                                token: jwt
-                            });
-                        }).catch((err) => {
-                            res.status(500).json({ err });
-                        });
+        const user = await User.findOne({ where: { email } });
+        if (user) {
+            return res.status(403).json({
+                msg: "You are already registered"
+            })
+        } else {
+            bcrypt.genSalt(saltRounds, (err, salt) => {
+                if (err) throw err;
+                bcrypt.hash(password, salt, (err, hash) => {
+                    if (err) throw err;
+
+                    password = hash;
+                    User.create({ name, email, phone, password, id: userId })
+                    res.status(200).json({
+                        msg: "Account Created",
+                        success: true,
+                        token: jwt
                     })
                 })
-            }
-        })
+            })
+        }
     } catch (err) {
         console.log("error in Register ", err);
     }
 }
-// const login = ab;
-const login = (req, res) => {
-    const { email, password } = req.body;
 
-    User.findOne({ Where: { email }, row: true }).then((user) => {
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ where: { email } });
         if (!user) {
-            return res.status(401).json({
-                error: "User not found!",
-                success: false,
-                msg: "Invalid credentials"
-            });
-        }
-        let originalPassword = user.password;
-        bcrypt.compare(password, originalPassword).then((isMatch) => {
-            if (isMatch) {
-                const { id, email } = user;
-                const payload = { id, email };
-                jwt.sign(
-                    payload, "secret",
-                    {
-                        expiresIn: 3600,
-                    },
-                    (err, token) => {
-                        return res.status(200).json({
-                            success: true,
-                            token: token,
-                            msg: "Logged in succefully",
-                            userId: user.id,
-                            name: user.name,
-                            email
+            return res.status(403).json({
+                msg: "Please Create a account",
+                success: false
+            })
+        } else {
+            const originalPass = user.password;
+            const ismatch = await bcrypt.compare(password, originalPass);
+            if (ismatch) {
+                const { email, id } = user;
+                console.log(email, id);
+                const payload = { email, id }
+                jwt.sign(payload, "secret", {expiresIn: 36000}, (err, token) => {
+                    if (err) throw err;
+                    return res.status(200).json({
+                        msg: "Loginin Successfully",
+                        success: true,
+                        userId: id,
+                        token: token
+                    })
+                })
 
-                        });
-                    }
-                )
             } else {
-                return res.status(400).json({
-                    error: "Password not match",
-                    success: false,
-                    msg: "Invalid Password"
+                console.log("not login");
+                return res.status(403).json({
+                    msg: "Please enter correct Password",
+                    success: false
                 })
             }
-        })
-
-    })
-
+        }
+    } catch (err) {
+        console.log(err);
+    }
 }
-
 
 module.exports = { signin, login };

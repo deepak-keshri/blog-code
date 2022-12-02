@@ -5,10 +5,10 @@ import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Signin = () => {
-    const [name, setName] = useState("deepak");
-    const [email, setEmail] = useState("deepak@nirvaat.in");
-    const [phone, setPhone] = useState("6387927490");
-    const [password, setPassword] = useState("dk123");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     const addSignin = async (e) => {
@@ -30,8 +30,9 @@ const Signin = () => {
                     pauseOnHover: true,
                     draggable: true,
                   });
-                localStorage.setItem("token", res.token);
-                navigate("/");
+                // localStorage.setItem("token", res.token);
+                // localStorage.setItem("userId",res.userId);
+                navigate("/login");
             } else {
                 toast.error(res.msg, {
                     position: "top-center",

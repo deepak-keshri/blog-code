@@ -2,22 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 const AddPost = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const navigate = useNavigate();
-    
+
     const createPost = async (e) => {
         e.preventDefault();
 
         try {
+            const userId = localStorage.getItem("userId");
+            // const response = await axios.post("http://localhost:8000/api/addpost", {
+            //     body: { title, content, userId }
+            // })
             const response = await fetch("http://localhost:8000/api/addpost", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ title: title, content: content })
+                body: JSON.stringify({ title: title, content: content, userId })
             });
             const res = await response.json();
             if (res.success) {
